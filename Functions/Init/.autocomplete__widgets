@@ -13,10 +13,6 @@ ${0}:z() {
   builtin zle -N "$1" .autocomplete__${2}__zle-widget
 }
 
-${0}:z   up-line-or-search{,}
-${0}:z down-line-or-select{,}
-${0}:z history-search{-backward,}
-
 ${0}:precmd() {
   emulate -L zsh
   setopt $_autocomplete__func_opts[@]
@@ -33,7 +29,6 @@ ${0}:precmd() {
   ${0}:c {,}reverse-menu-complete            complete-word
   ${0}:c insert-unambiguous-or-complete   {,}complete-word
   ${0}:c menu-search             menu-select complete-word
-  ${0}:c history-search-backward menu-select history-search
 
   # Autosuggestions otherwise makes $WIDGETSTYLE disappear
   [[ -v ZSH_AUTOSUGGEST_IGNORE_WIDGETS ]] &&

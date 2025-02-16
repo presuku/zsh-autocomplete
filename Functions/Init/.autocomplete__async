@@ -14,8 +14,6 @@ typeset -g ZSH_AUTOSUGGEST_USE_ASYNC=yes
 ${0}:precmd() {
   [[ -v ZSH_AUTOSUGGEST_IGNORE_WIDGETS ]] &&
       ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(
-          history-incremental-search-backward
-          recent-paths
           .autocomplete:async:complete:fd-widget
       )
 
@@ -27,9 +25,6 @@ ${0}:precmd() {
   builtin zle -N .autocomplete:async:wait:fd-widget
 
   builtin zle -C ._list_choices list-choices .autocomplete:async:list-choices:completion-widget
-
-  builtin zle -N history-incremental-search-backward .autocomplete:async:toggle-context
-  builtin zle -N recent-paths .autocomplete:async:toggle-context
 
   add-zle-hook-widget line-init .autocomplete:async:reset-context
   add-zle-hook-widget line-pre-redraw .autocomplete:async:complete
@@ -445,42 +440,28 @@ ${0}:precmd() {
 }
 
 .autocomplete:async:list-choices:main-complete() {
-  local -i _autocomplete__max_lines
+  {
+    () {
+      emulate -L zsh
+      setopt $_autocomplete__func_opts[@]
 
-  case $curcontext in
-  *history-* )
-    setopt $_autocomplete__func_opts[@]
-    autocomplete:_main_complete:new - history-lines _autocomplete__history_lines
-  ;;
-  recent-paths:* )
-    setopt $_autocomplete__func_opts[@]
-    autocomplete:_main_complete:new - recent-paths _autocomplete__recent_paths
-  ;;
-  * )
-    {
-      () {
-        emulate -L zsh
-        setopt $_autocomplete__func_opts[@]
+      local curcontext=list-choices:::
 
-        local curcontext=list-choices:::
+      .autocomplete:async:shadow compadd
 
-        .autocomplete:async:shadow compadd
+      autoload -Uz +X _describe
+      .autocomplete:async:shadow _describe
 
-        autoload -Uz +X _describe
-        .autocomplete:async:shadow _describe
+      # functions -T compadd _describe _description
+    } "$@"
 
-        # functions -T compadd _describe _description
-      } "$@"
-
-      .autocomplete:async:list-choices:max-lines
-      autocomplete:_main_complete:new "$@"
-    } always {
-      unfunction compadd comptags 2> /dev/null
-      .autocomplete:async:unshadow compadd
-      .autocomplete:async:unshadow _describe
-    }
-  ;;
-  esac
+    .autocomplete:async:list-choices:max-lines
+    autocomplete:_main_complete:new "$@"
+  } always {
+    unfunction compadd comptags 2> /dev/null
+    .autocomplete:async:unshadow compadd
+    .autocomplete:async:unshadow _describe
+  }
 }
 
 .autocomplete:async:shadow() {
