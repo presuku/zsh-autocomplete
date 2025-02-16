@@ -13,19 +13,20 @@ local -A main=() emacs=() vicmd=() menukeys=()
 local backtab=$terminfo[kcbt]
 
 menukeys+=(
-                '\t' accept-line
+                '\t' menu-select
                 '^@' accept-and-hold
                '^[v' accept-and-hold
                 '^_' undo
                '^[u' undo
     "$terminfo[kpp]" backward-word
-    "$terminfo[knp]"  forward-word
+    "$terminfo[knp]" forward-word
+    "$backtab"       reverse-menu-complete
 )
-bindkey -M menuselect -s "$backtab" "^_$backtab"
+# bindkey -M menuselect -s "$backtab" "^_$backtab"
 
 
 main+=(
-          '\t' complete-word
+          '\t' menu-select
     "$backtab" insert-unambiguous-or-complete
 )
 
