@@ -38,7 +38,7 @@ ${0}:precmd() {
   else
 
     # Check if our most recently modified completion function is newer than the comp dump file.
-    local -Pa newest=( ~autocomplete/Completions/_*~*.zwc(N-.omY1) )
+    local -Pa newest=( ${_autocomplete__basedir}/Completions/_*~*.zwc(N-.omY1) )
     if [[ $newest[1] -nt $_comp_dumpfile ]]; then
       zf_rm -f $_comp_dumpfile
     fi

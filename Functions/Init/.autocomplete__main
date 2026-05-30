@@ -11,7 +11,7 @@ typeset -ga _autocomplete__ctxt_opts=( completealiases completeinword )
 
 typeset -ga _autocomplete__mods=( compinit config widgets key-bindings async )
 
-typeset -gU FPATH fpath=( ~autocomplete/Completions $fpath[@] )
+typeset -gU FPATH fpath=( ${_autocomplete__basedir}/Completions $fpath[@] )
 
 local -P xdg_data_home=${XDG_DATA_HOME:-$HOME/.local/share}
 
@@ -32,7 +32,6 @@ for bug in ${logdir} ${logdir:h}; do
 done
 
 zf_mkdir -p -- $logdir
-hash -d autocomplete-log=$logdir
 
 local -Pa older_than_a_week=( $logdir/*(Nmd+7) )
 (( $#older_than_a_week[@] )) &&
