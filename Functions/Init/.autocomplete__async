@@ -99,7 +99,7 @@ ${0}:precmd() {
       unset POSTDISPLAY
 
   # Don't get activated by asynchronous widgets.
-  [[ $LASTWIDGET == (autosuggest-suggest|.autocomplete:async:*:callback|.zasync.fd-callback) ]] &&
+  [[ $LASTWIDGET == (autosuggest-suggest|.autocomplete:async:*:callback|.zasync.fd-callback|(up|down)-line-or-beginning-search) ]] &&
       return 0
 
   {
