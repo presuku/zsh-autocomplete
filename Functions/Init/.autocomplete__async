@@ -19,7 +19,7 @@ ${0}:precmd() {
     if [[ ! -d $zasync_dir/.git ]]; then
       command git clone --depth 1 -- \
           https://github.com/marlonrichert/zasync.git "$zasync_dir"
-    elif [[ ~autocomplete/zsh-autocomplete.plugin.zsh -nt $zasync_dir/.git/FETCH_HEAD ]]; then
+    elif [[ ${_autocomplete__basedir}/zsh-autocomplete.plugin.zsh -nt $zasync_dir/.git/FETCH_HEAD ]]; then
       command git -C "$zasync_dir" pull --ff-only
     fi
 
