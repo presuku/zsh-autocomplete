@@ -44,7 +44,6 @@ ${0}:precmd() {
 
   builtin zle -C ._list_choices list-choices .autocomplete:async:list-choices:completion-widget
 
-  builtin zle -N history-incremental-search-backward .autocomplete:async:toggle-context
   builtin zle -N recent-paths .autocomplete:async:toggle-context
 
   add-zle-hook-widget line-init .autocomplete:async:reset-context
